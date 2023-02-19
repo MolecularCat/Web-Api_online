@@ -64,9 +64,9 @@
                                 }
                                 else
                                 {
-                                    <option disabled="disabled"  value="@item.Acronim">@item.Acronim (not ready)</option>
+                                    <option disabled="disabled" value="@item.Acronim">@item.Acronim (not ready)</option>
                                 }
-                                
+
                             }
                         </select>
                         <button id="createButton" class="btn btn-success" type="submit">Сreate</button>
@@ -88,36 +88,56 @@
                         <tbody>
                             @foreach (var item in Model.UserIncomeWallets)
                             {
-                                <tr>
-                                    <td>
-                                        @item.CurrencyAcronim
-                                    </td>
-                                    <td>
-                                        @item.Address
-                                        <span class="ms-2">
-                                             <i class="dripicons-copy stats-links" title="Click to copy"                                                 
-                                                onClick="@("return copyTextToClipboard(\"" +
+                                @if (item.CurrencyAcronim == "RURT")
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.CurrencyAcronim
+                                        </td>
+                                        <td>
+                                            <a href="/wallets/deposit">Deposit</a>
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td>
+                                            @item.Created.ToString("dd-MM-yyyy HH:mm:ss")
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.CurrencyAcronim
+                                        </td>
+                                        <td>
+                                            @item.Address
+                                            <span class="ms-2">
+                                                <i class="dripicons-copy stats-links" title="Click to copy"
+                                           onClick="@("return copyTextToClipboard(\"" +
                                                             item.Address +
                                                             "\",\"Wallet addres copied to clipboard\")")">
-                                             </i>
-                                         </span>
-                                    </td>
-                                    <td>
-                                        @if (item.QrCode != null)
-                                        {
-                                            var qrCode = String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.QrCode));
+                                                </i>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (item.QrCode != null)
+                                            {
+                                                var qrCode = String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.QrCode));
 
-                                            <img class="qrcode-img" src="@qrCode" onclick="@("return showModalQr(\""+qrCode+"\")")")" />
+                                                <img class="qrcode-img" src="@qrCode" onclick="@("return showModalQr(\""+qrCode+"\")")" )" />
 
-                                            <div class="popup-qr-container" onclick="closeModalQr()">
-                                                <img class="modal-qrcode-content"/>
-                                            </div>
-                                        }
-                                    </td>
-                                    <td>
-                                        @item.Created.ToString("dd-MM-yyyy HH:mm:ss")
-                                    </td>
-                                </tr>
+                                                <div class="popup-qr-container" onclick="closeModalQr()">
+                                                    <img class="modal-qrcode-content" />
+                                                </div>
+                                            }
+                                        </td>
+                                        <td>
+                                            @item.Created.ToString("dd-MM-yyyy HH:mm:ss")
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>

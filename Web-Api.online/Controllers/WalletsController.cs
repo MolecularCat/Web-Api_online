@@ -123,5 +123,10 @@ namespace Web_Api.online.Controllers
                 return Redirect("/Login");
             }
         }
+
+        public async Task<ActionResult> Deposit()
+        {
+            return View();
+        }
     }
 }
