@@ -2,6 +2,12 @@
     ViewData["Title"] = "Wallets - Deposit";
 }
 
+<style>
+    .QiwiCashInTable td {
+        padding: 10px;
+    }
+</style>
+
 <div class="row">
     <div class="col-12">
         <div class="page-title-box">
@@ -14,11 +20,20 @@
         <div class="card">
             <div class="card-body">
 
-
-                <h4>Deposit</h4>
-                <div class="table-responsive">
-                    
-                </div>
+                <table class="QiwiCashInTable">
+                    <tr>
+                        <td>
+                            <img src="/img/payments/qiwi_and_cards.jpg" style="width: 150px; min-width: 100px;" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control border-0" placeholder="1000">
+                            <span style="font-size: 10px; white-space: nowrap;">Комментарий не меняйте</span>
+                        </td>
+                        <td>
+                            <input class="btn btn-success" style="width: 150px; cursor: pointer;" onclick="ShowQiwiAlert()" value="Пополнить">
+                        </td>
+                    </tr>
+                </table>
                 <hr />
 
             </div>
@@ -26,10 +41,45 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    function ShowQiwiAlert() {
+
+        var el = document.createElement("img");
+        el.src = "/Images/qiwi_and_cards.jpg";
+        el.width = "200";
+
+        swal({
+            title: "Произведите оплату",
+            content: el,
+            buttons: ["Отмена", "Проверить оплату"],
+        }).then((getPay) => {
+            if (getPay) {
+                window.open("/Account/Operations.aspx?ch=<%= QiwiAccountCheck %>", "_self")
+            } else {
+
+            }
+        });
+
+        //swal("Произведите оплату", {
+        //    buttons: ["Отмена", true],
+        //});
+
+        var url = "https://qiwi.com/payment/form/99?amountFraction=00" +
+            "&extra[%27account%27]=" + <%= QiwiAccount %> +
+                "&extra[%27comment%27]=id" + <%= User.PublicId %> +
+                    "&amountInteger=" + $('#QiwiPaymentAmountTextBox').val() +
+                    "& currency=RUB" +
+                    "&source=qiwi_RUB";
+
+        var win = window.open(url, '_blank');
+        win.focus();
+    }
+</script>
+
 
 <script>
     $(document).ready(function () {
-        
+
     });
 
 </script>
