@@ -29,24 +29,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#selectCurrency option:first").attr('selected', 'selected');
-        //$("#selectCurrency option:first").prop("selected", "selected");
-
-        $("#createButton").click(function () {
-            var currency = $('#selectCurrency').find(":selected").val();;
-            createWallet(currency);
-        });
+        
     });
-
-    function createWallet(currency) {
-        var url = "/wallets/create/" + currency;
-        $.get(url, function (data) {
-            var address = data;
-
-            $("#walletsList").append('<li>' + data.id + ' ' + data.currencyAcronim + ' ' + data.value + ' ' + data.address + '</li>');
-
-
-        });
-    }
 
 </script>
