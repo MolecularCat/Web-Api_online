@@ -2,6 +2,7 @@
     ViewData["Title"] = "Wallets - Deposit";
 }
 
+<script type="text/javascript" src="/js/sweet-alert.min.js"></script>
 <style>
     .QiwiCashInTable td {
         padding: 10px;
@@ -30,7 +31,7 @@
                             <span style="font-size: 10px; white-space: nowrap;">Комментарий не меняйте</span>
                         </td>
                         <td>
-                            <input class="btn btn-success" style="width: 150px; cursor: pointer;" onclick="ShowQiwiAlert()" value="Пополнить">
+                            <input class="btn btn-success" style="width: 150px; cursor: pointer;" onclick="ShowQiwiAlert()" value="Пополнить" />
                         </td>
                     </tr>
                 </table>
@@ -45,16 +46,16 @@
     function ShowQiwiAlert() {
 
         var el = document.createElement("img");
-        el.src = "/Images/qiwi_and_cards.jpg";
+        el.src = "/img/payments/qiwi_and_cards.jpg";
         el.width = "200";
 
         swal({
-            title: "Произведите оплату",
+            title: "Make a payment",
             content: el,
-            buttons: ["Отмена", "Проверить оплату"],
+            buttons: ["Cancel", "Check payment"],
         }).then((getPay) => {
             if (getPay) {
-                window.open("/Account/Operations.aspx?ch=<%= QiwiAccountCheck %>", "_self")
+                window.open("/Account/Operations.aspx?ch=79686399088", "_self")
             } else {
 
             }
@@ -65,8 +66,8 @@
         //});
 
         var url = "https://qiwi.com/payment/form/99?amountFraction=00" +
-            "&extra[%27account%27]=" + <%= QiwiAccount %> +
-                "&extra[%27comment%27]=id" + <%= User.PublicId %> +
+            "&extra[%27account%27]=79686399088" +
+                "&extra[%27comment%27]=id" + @Model +
                     "&amountInteger=" + $('#QiwiPaymentAmountTextBox').val() +
                     "& currency=RUB" +
                     "&source=qiwi_RUB";

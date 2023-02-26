@@ -126,7 +126,15 @@ namespace Web_Api.online.Controllers
 
         public async Task<ActionResult> Deposit()
         {
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var wallet = await _walletsRepository.GetUserWalletAsync(userId, "RURT");
+
+                return View(wallet.Id);
+            }
+
+            return Redirect("/Login");
         }
     }
 }
