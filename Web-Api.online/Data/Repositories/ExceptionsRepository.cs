@@ -30,6 +30,19 @@ namespace Web_Api.online.Data.Repositories
                 return null;
             }
         }
+        
+        public async Task<List<ExceptionTableModel>> GetTop100ExceptionsAsync()
+        {
+            try
+            {
+                return (await _db.QueryAsync<ExceptionTableModel>("Get_Top100_Exceptions",
+                    commandType: CommandType.StoredProcedure)).AsList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
         public async Task CreateExceptionAsync(Exception exception)
         {
