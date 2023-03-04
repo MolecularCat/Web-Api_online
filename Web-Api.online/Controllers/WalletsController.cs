@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Web_Api.online.Data.Repositories;
 using Web_Api.online.Data.Repositories.Abstract;
+using Web_Api.online.Models;
 using Web_Api.online.Models.Enums;
 using Web_Api.online.Models.Tables;
 using Web_Api.online.Services;
@@ -131,7 +132,12 @@ namespace Web_Api.online.Controllers
             {
                 var wallet = await _walletsRepository.GetUserWalletAsync(userId, "RURT");
 
-                return View(wallet.Id);
+                DepositModel model = new DepositModel();
+
+                model.Id = wallet.Id;
+                model.Phone = "79686399088";
+
+                return View(model);
             }
 
             return Redirect("/Login");

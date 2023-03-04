@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DepositModel
+@{
     ViewData["Title"] = "Wallets - Deposit";
 }
 
@@ -55,7 +56,7 @@
             buttons: ["Cancel", "Check payment"],
         }).then((getPay) => {
             if (getPay) {
-                window.open("/My/Incomes", "_self")
+                window.open("/My/Incomes?ch=" + @Model.Phone, "_self")
             } else {
 
             }
@@ -66,8 +67,8 @@
         //});
 
         var url = "https://qiwi.com/payment/form/99?amountFraction=00" +
-            "&extra[%27account%27]=79686399088" +
-                "&extra[%27comment%27]=id" + @Model +
+            "&extra[%27account%27]=" + @Model.Phone + 
+                "&extra[%27comment%27]=id" + @Model.Id +
                     "&amountInteger=" + $('#QiwiPaymentAmountTextBox').val() +
                     "& currency=RUB" +
                     "&source=qiwi_RUB";
