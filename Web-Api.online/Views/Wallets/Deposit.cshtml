@@ -28,7 +28,7 @@
                             <img src="/img/payments/qiwi_and_cards.jpg" style="width: 150px; min-width: 100px;" />
                         </td>
                         <td>
-                            <input type="text" class="form-control border-0" value="1000" placeholder="1000">
+                            <input type="text" name="qiwiPaymentAmount" class="form-control border-0" value="1000" placeholder="1000">
                             <span style="font-size: 10px; white-space: nowrap;">don't change the comment</span>
                         </td>
                         <td>
@@ -69,7 +69,7 @@
         var url = "https://qiwi.com/payment/form/99?amountFraction=00" +
             "&extra[%27account%27]=" + @Model.Phone + 
                 "&extra[%27comment%27]=id" + @Model.Id +
-                    "&amountInteger=" + $('#QiwiPaymentAmountTextBox').val() +
+            "&amountInteger=" + $("input[name='qiwiPaymentAmount']").val() +
                     "& currency=RUB" +
                     "&source=qiwi_RUB";
 
