@@ -27,6 +27,8 @@ namespace Web_Api.online.Controllers
         private readonly UserManager<IdentityUser> _usersManager;
         private readonly WalletsRepository _walletsRepository;
         private readonly UserRepository _userRepository;
+        private QiwiRepository _qiwiRepository;
+
         public MyController(
             IEventsRepository eventsRepository,
             TransactionsRepository transactionsRepository,
@@ -34,7 +36,8 @@ namespace Web_Api.online.Controllers
             UsersInfoRepository usersInfoRepository,
             UserManager<IdentityUser> usersManager,
             WalletsRepository walletsRepository,
-            UserRepository userRepository)
+            UserRepository userRepository,
+            QiwiRepository qiwiRepository)
         {
             _transactionsRepository = transactionsRepository;
             _outcomeTransactionRepository = outcomeTransactionRepository;
@@ -43,6 +46,7 @@ namespace Web_Api.online.Controllers
             _usersManager = usersManager;
             _walletsRepository = walletsRepository;
             _userRepository = userRepository;
+            _qiwiRepository = qiwiRepository;
         }
 
         [HttpPost]
@@ -112,7 +116,7 @@ namespace Web_Api.online.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Incomes(SortModel model)
+        public async Task<IActionResult> Incomes(SortModel model, string ch = null)
         {
             int pageSize = 15;
 
@@ -121,6 +125,16 @@ namespace Web_Api.online.Controllers
             if (string.IsNullOrEmpty(userId))
             {
                 return Redirect("/Login%2FMy%2FEvents");
+            }
+
+            if (!string.IsNullOrEmpty(ch))
+            {
+                QiwiCashInQueueItem queueItem = new QiwiCashInQueueItem();
+
+                queueItem.UserId = userId;
+                queueItem.Phone = ch;
+
+                _qiwiRepository.AddQiwiCashInQueueItem(queueItem);
             }
 
             var userIncomes = await _transactionsRepository.GetPagedIncomeTransactionsByUserId(userId, model.Page, pageSize);

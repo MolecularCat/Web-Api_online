@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Web_Api.online.Models;
+using System;
 
 namespace Web_Api.online.Data.Repositories
 {
@@ -49,6 +50,7 @@ namespace Web_Api.online.Data.Repositories
 
             var result = await _db.QueryFirstAsync<bool>("AddCashIn", p, commandType: CommandType.StoredProcedure);
         }
+
         public async Task QiwiHistoryChecked(string number)
         {
             var p = new DynamicParameters();
@@ -67,10 +69,13 @@ namespace Web_Api.online.Data.Repositories
             return result;
         }
 
+        public async Task AddQiwiCashInQueueItem(QiwiCashInQueueItem item)
+        {
+            var p = new DynamicParameters();
+            p.Add("userId", item.UserId);
+            p.Add("phone", item.Phone);
 
-
-
-
-
+            await _db.QueryAsync("AddQiwiCashInQueueItem", p, commandType: CommandType.StoredProcedure);
+        }
     }
 }

@@ -153,6 +153,7 @@ namespace Web_Api.online
             services.AddTransient<WalletService>();
             services.AddTransient<BalanceProvider>();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<QiwiRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
