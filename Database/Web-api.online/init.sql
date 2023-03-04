@@ -218,6 +218,23 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+CREATE TABLE [dbo].[QiwiCashInQueue](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [nvarchar](450) NULL,
+	[Phone] [nvarchar](50) NULL,
+	[Status] [int] NOT NULL,
+	[Created] [datetime] NOT NULL,
+	[Finished] [datetime] NULL,
+ CONSTRAINT [PK_QiwiCashInQueue] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[UsersInfo](
 	[UserId] [nvarchar](450) NOT NULL,
 	[ProfilePhotoPath] [nvarchar](max) NULL,
@@ -277,6 +294,10 @@ ALTER TABLE [dbo].[Phones] ADD  CONSTRAINT [DF_Phones_IdentificateStatus]  DEFAU
 GO
 ALTER TABLE [dbo].[Phones] ADD  CONSTRAINT [DF_Phones_Commision]  DEFAULT ((0)) FOR [Commision]
 GO
+ALTER TABLE [dbo].[QiwiCashInQueue] ADD  CONSTRAINT [DF_QiwiCashInQueue_Status]  DEFAULT ((0)) FOR [Status]
+GO
+ALTER TABLE [dbo].[QiwiCashInQueue] ADD  CONSTRAINT [DF_QiwiCashInQueue_Created]  DEFAULT (getdate()) FOR [Created]
+GO
 ALTER TABLE [dbo].[UsersInfo] ADD  CONSTRAINT [DF_UsersInfo_RegistrationDate]  DEFAULT (getdate()) FOR [RegistrationDate]
 GO
 ALTER TABLE [dbo].[AspNetRoleClaims]  WITH CHECK ADD  CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId] FOREIGN KEY([RoleId])
@@ -331,6 +352,23 @@ BEGIN
 
 INSERT INTO [Exchange].[dbo].[CashIns] ([UserNumber], [Value], [Sposob], [WwhenDate], [AcceptedAccount], [SendAccount])
 VALUES (@userNumber, @value, @sposob, @whenDate, @acceptedAccount, @sendAccount)
+
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[AddQiwiCashInQueueItem]
+@userId nvarchar(450),
+@phone nvarchar(50)
+AS
+BEGIN
+
+INSERT INTO [web-api.online].[dbo].[QiwiCashInQueue] ([UserId], [Phone])
+VALUES (@userId, @phone)
 
 END
 GO
