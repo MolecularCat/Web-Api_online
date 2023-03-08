@@ -319,5 +319,26 @@ tr.td-buy>* {
 	}
 }
 
+.QiwiCashInTable img {
+  max-width: 100px;
+  margin-right: 10px;
+}
+.QiwiCashInTable span {
+    font-size: 10px; 
+    white-space: nowrap;
+}
+.QiwiCashInTable .btn {
+    width: 150px;
+    margin-left: 10px;
+}
+
+@media (max-width: 419px) {
+    .QiwiCashInTable img {
+        max-width: 40px;
+    }
+    .QiwiCashInTable .btn {
+        width: 100px;
+    }
+}
 
 /* look to important!!! */
