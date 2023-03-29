@@ -729,6 +729,42 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
+
+CREATE PROCEDURE [dbo].[GetLastQiwiCashInQueue]
+
+AS
+BEGIN
+
+
+DECLARE @PhoneTable TABLE(
+    Id int,
+    Phone [nvarchar](50),
+	[Status] [int],
+	[Created] [datetime],
+	[Finished] [datetime]
+);
+
+INSERT INTO @PhoneTable (Id, Phone, [Status], [Created], [Finished])
+SELECT top 1 Id, [Phone], [Status], [Created], [Finished]
+FROM [web-api.online].[dbo].[QiwiCashInQueue]
+where Status = 0
+order by id desc;
+
+UPDATE [web-api.online].[dbo].[QiwiCashInQueue]  
+SET [Status] = 1
+WHERE [Phone] = (select Phone from @PhoneTable)
+AND [Status] = 0; 
+
+SELECT * from @PhoneTable;
+
+END
+
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 create PROCEDURE [dbo].[GetLastRates]
 AS
 BEGIN
@@ -1178,13 +1214,20 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE  [dbo].[spUpdateQiwiAccountWhenHistoryChecked]
-@number nvarchar(50)
+@number nvarchar(50),
+@lastPhoneId integer
 AS
 BEGIN
 
 	UPDATE Phones
 	SET WhenHistoryChecked = GETDATE()
 	WHERE Number = @number;
+
+	update [QiwiCashInQueue]
+    set status = 2
+		,[Finished] = GETDATE()
+	WHERE Phone = @number
+	AND [Id] <= @lastPhoneId;
 
 END
 GO
