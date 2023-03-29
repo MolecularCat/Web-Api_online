@@ -21,16 +21,19 @@ namespace Web_Api.online.Controllers
         private TransactionManager _transactionManager;
         private IEventsRepository _eventsRepository;
         private WalletService _walletService;
+        private readonly UserRepository _userRepository;
 
         public WalletsController(WalletsRepository walletsRepository,
             TransactionManager transactionManager,
             IEventsRepository eventsRepository,
-            WalletService walletService)
+            WalletService walletService,
+            UserRepository userRepository)
         {
             _walletsRepository = walletsRepository;
             _transactionManager = transactionManager;
             _eventsRepository = eventsRepository;
             _walletService = walletService;
+            _userRepository = userRepository;
         }
 
         public class IndexModel
@@ -132,9 +135,11 @@ namespace Web_Api.online.Controllers
             {
                 var wallet = await _walletsRepository.GetUserWalletAsync(userId, "RURT");
 
+                var user = await _userRepository.GetUser(userId);
+
                 DepositModel model = new DepositModel();
 
-                model.Id = wallet.Id;
+                model.Id = user.Number;
                 model.Phone = "79686399088";
 
                 return View(model);
