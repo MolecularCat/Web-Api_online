@@ -6304,6 +6304,38 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
+CREATE PROCEDURE [dbo].[GetOutcomeTransactionsByUserId_Paged]
+@userId nvarchar(450),
+@page int,
+@pageSize int
+AS
+BEGIN
+
+Select
+   ot.FromWalletId
+  ,ot.CurrencyAcronim
+  ,ot.TransactionHash
+  ,ot.Value
+  ,ot.CreateDate
+  ,ot.ToAddress
+  ,ot.State
+  ,ot.LastUpdateDate
+  ,ot.ErrorText
+FROM [Exchange].[dbo].[OutcomeTransactions] ot
+left join Wallets w on ot.FromWalletId = w.Address
+WHERE w.UserId = @userId
+Order By ot.Id desc
+OFFSET @pageSize * (@page - 1) ROWS
+FETCH  NEXT @pageSize ROWS ONLY
+
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
 CREATE PROCEDURE [dbo].[GetP2PBuyersByCryptId]
 @page int,
 @cryptId int
