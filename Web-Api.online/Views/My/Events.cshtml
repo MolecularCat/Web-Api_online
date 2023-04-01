@@ -23,6 +23,7 @@
                         <thead>
                             <tr class="table-primary">
                                 <th>Event</th>
+                                <th>Amount</th>
                                 <th>Comment</th>
                                 <th>Date</th>
                             </tr>
@@ -33,6 +34,9 @@
                                 <tr>
                                     <td>
                                         @((EventTypeEnum)item.Type)
+                                    </td>
+                                    <td>
+                                        <span class="decimal-data">@item.Value</span>
                                     </td>
                                     <td>
                                         @item.Comment
