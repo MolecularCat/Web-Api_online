@@ -47,15 +47,6 @@ namespace Web_Api.online.Services
             return await _qiwiRepository.GetQiwiAcoount(number);
         }
 
-        public async Task CheckQiwiAccountPaymentsHistory(string number)
-        {
-            Phones item = await _qiwiRepository.GetQiwiAcoount(number);
-
-            var q = new QiwiCheckHistory(this);
-
-            q.CheckPaymentsHistory(item.Number, item.Pwd);
-        }
-
         public async Task AddQiwiPayment(CheckQiwiPayment checkQiwiPayment)
         {
             try
