@@ -350,7 +350,7 @@ CREATE PROCEDURE [dbo].[AddCashIn]
 AS
 BEGIN
 
-INSERT INTO [Exchange].[dbo].[CashIns] ([UserNumber], [Value], [Sposob], [WwhenDate], [AcceptedAccount], [SendAccount])
+INSERT INTO [CashIns] ([UserNumber], [Value], [Sposob], [WhenDate], [AcceptedAccount], [SendAccount])
 VALUES (@userNumber, @value, @sposob, @whenDate, @acceptedAccount, @sendAccount)
 
 END
