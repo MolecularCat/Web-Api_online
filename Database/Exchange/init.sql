@@ -2371,7 +2371,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE [dbo].[CreateIncomeTransaction]
-@currencyAcronim nvarchar(10),
+@currencyAcronim nvarchar(50),
 @transactionHash nvarchar(max),
 @amount decimal(38, 20),
 @transactionFee decimal(38, 20),
