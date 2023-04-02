@@ -118,7 +118,7 @@
 
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        const ch = urlParams.get('ch')
+        const ch = urlParams.get('ch');
 
         if (!!ch) {
             window.history.replaceState(null, null, window.location.pathname);
