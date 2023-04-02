@@ -115,6 +115,13 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const ch = urlParams.get('ch')
+
         window.history.replaceState(null, null, window.location.pathname);
+
+        if (!!ch) { setTimeout(function () { document.location.reload() }, 5000); }
     });
 </script>
