@@ -367,8 +367,13 @@ CREATE PROCEDURE [dbo].[AddQiwiCashInQueueItem]
 AS
 BEGIN
 
+IF EXISTS (SELECT * FROM [Phones] WHERE [Number] = @phone) 
+BEGIN
+
 INSERT INTO [web-api.online].[dbo].[QiwiCashInQueue] ([UserId], [Phone])
 VALUES (@userId, @phone)
+
+END
 
 END
 GO
