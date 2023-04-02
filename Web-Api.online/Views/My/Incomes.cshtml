@@ -120,8 +120,9 @@
         const urlParams = new URLSearchParams(queryString);
         const ch = urlParams.get('ch')
 
-        window.history.replaceState(null, null, window.location.pathname);
-
-        if (!!ch) { setTimeout(function () { document.location.reload() }, 5000); }
+        if (!!ch) {
+            window.history.replaceState(null, null, window.location.pathname);
+            setTimeout(function () { document.location.reload() }, 5000);
+        }
     });
 </script>
