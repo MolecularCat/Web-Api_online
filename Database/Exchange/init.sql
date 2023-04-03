@@ -6682,6 +6682,39 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
+CREATE PROCEDURE [dbo].[GetTransfersByUser_Paged]
+@userId nvarchar(450),
+@page int,
+@pageSize int
+AS
+BEGIN
+
+	SELECT t.[Id]
+      ,t.[WalletFromId]
+      ,t.[WalletToId]
+      ,t.[Value]
+      ,t.[Date]
+      ,t.[CurrencyAcronim]
+      ,t.[Hash]
+      ,t.[Comment]
+      ,t.[PlatformCommission]
+	  ,w.UserId
+  FROM [Exchange].[dbo].[Transfers] AS t
+  LEFT JOIN Wallets AS w ON t.WalletFromId = w.Id 
+	WHERE UserId = @userId
+	ORDER BY t.Date DESC
+	OFFSET @pageSize * (@page - 1) ROWS
+	FETCH  NEXT @pageSize ROWS ONLY
+
+END
+
+
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE PROCEDURE [dbo].[GetUserIdByWalletAddress]
 @address nvarchar(max)
 AS
