@@ -6699,10 +6699,10 @@ BEGIN
       ,t.[Hash]
       ,t.[Comment]
       ,t.[PlatformCommission]
-	  ,w.UserId
   FROM [Exchange].[dbo].[Transfers] AS t
-  LEFT JOIN Wallets AS w ON t.WalletFromId = w.Id 
-	WHERE UserId = @userId
+  LEFT JOIN Wallets AS wf ON t.WalletFromId = wf.Id
+  LEFT JOIN Wallets AS wt ON t.WalletToId = wt.Id
+	WHERE wf.UserId = @userId OR wt.UserId = @userId
 	ORDER BY t.Date DESC
 	OFFSET @pageSize * (@page - 1) ROWS
 	FETCH  NEXT @pageSize ROWS ONLY
