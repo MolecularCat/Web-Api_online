@@ -51,6 +51,30 @@ namespace Web_Api.online.Data.Repositories
             }
         }
 
+
+        public async Task<List<spGetTransfersByUser_Paged>> GetTransfersPagedByUserId(string userId, int page, int pageSize)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", userId);
+                parameters.Add("page", page);
+                parameters.Add("pageSize", pageSize);
+
+                List<spGetTransfersByUser_Paged> result =
+                    (List<spGetTransfersByUser_Paged>)await _db.QueryAsync<spGetTransfersByUser_Paged>
+                    ("GetTransfersByUser_Paged",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public async Task<List<TransferTableModel>> GetTransfersPaged(int page, int pageSize)
         {
             try

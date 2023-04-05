@@ -22,6 +22,7 @@ namespace Web_Api.online.Controllers
     {
         private readonly IEventsRepository _eventsRepository;
         private readonly TransactionsRepository _transactionsRepository;
+        private TransferRepository _transferRepository;
         private readonly IOutcomeTransactionRepository _outcomeTransactionRepository;
         private readonly UsersInfoRepository _usersInfoRepository;
         private readonly UserManager<IdentityUser> _usersManager;
@@ -32,6 +33,7 @@ namespace Web_Api.online.Controllers
         public MyController(
             IEventsRepository eventsRepository,
             TransactionsRepository transactionsRepository,
+            TransferRepository transferRepository,
             IOutcomeTransactionRepository outcomeTransactionRepository,
             UsersInfoRepository usersInfoRepository,
             UserManager<IdentityUser> usersManager,
@@ -40,6 +42,7 @@ namespace Web_Api.online.Controllers
             QiwiRepository qiwiRepository)
         {
             _transactionsRepository = transactionsRepository;
+            _transferRepository = transferRepository;
             _outcomeTransactionRepository = outcomeTransactionRepository;
             _eventsRepository = eventsRepository;
             _usersInfoRepository = usersInfoRepository;
@@ -213,5 +216,27 @@ namespace Web_Api.online.Controllers
             return View(viewModel);
         }
 
+        public async Task<IActionResult> MyTransfers(SortModel model)
+        {
+            int pageSize = 15;
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Redirect("/Login%2FMy%2FEvents");
+            }          
+
+            var userTransfers = await _transferRepository.GetTransfersPagedByUserId(userId, model.Page, pageSize);
+            var itemsCount = await _transferRepository.GetCountOfTransfers();
+
+            MyTransfersViewModel viewModel = new MyTransfersViewModel()
+            {
+                PageViewModel = new PageViewModel(itemsCount, model.Page, pageSize),
+                Transfers = userTransfers ?? new List<spGetTransfersByUser_Paged>()
+            };
+
+            return View(viewModel);
+        }
     }
 }
